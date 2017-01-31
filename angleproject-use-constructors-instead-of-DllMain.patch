@@ -1,0 +1,57 @@
+--- angle/src/libGLESv2/main.cpp.orig	2015-12-31 00:23:50.243055837 +0100
++++ angle/src/libGLESv2/main.cpp	2015-12-31 00:30:27.452336403 +0100
+@@ -75,7 +75,7 @@
+ }
+ 
+ #if defined(ANGLE_PLATFORM_WINDOWS) && !defined(QT_OPENGL_ES_2_ANGLE_STATIC)
+-extern "C" BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID reserved)
++static BOOL gles_DllMain(HINSTANCE instance, DWORD reason, LPVOID reserved)
+ {
+     switch (reason)
+     {
+@@ -117,6 +117,17 @@
+ 
+     return TRUE;
+ }
++
++static void __attribute__((constructor)) gles_constructor_func (void)
++{
++    gles_DllMain(NULL, DLL_PROCESS_ATTACH, NULL) && gles_DllMain(NULL, DLL_THREAD_ATTACH, NULL);   
++}
++
++static void __attribute__((destructor)) gles_destructor_func (void)
++{
++    gles_DllMain(NULL, DLL_PROCESS_DETACH, NULL);
++}
++
+ #endif // ANGLE_PLATFORM_WINDOWS && !QT_OPENGL_ES_2_ANGLE_STATIC
+ 
+ namespace gl
+--- angle/src/libEGL/main.cpp.orig	2015-12-31 00:29:02.749423594 +0100
++++ angle/src/libEGL/main.cpp	2015-12-31 00:30:08.342130461 +0100
+@@ -51,7 +51,7 @@
+ 
+ #ifndef QT_OPENGL_ES_2_ANGLE_STATIC
+ 
+-extern "C" BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID reserved)
++static BOOL egl_DllMain(HINSTANCE instance, DWORD reason, LPVOID reserved)
+ {
+     switch (reason)
+     {
+@@ -110,6 +110,16 @@
+     return TRUE;
+ }
+ 
++static void __attribute__((constructor)) egl_constructor_func (void)
++{
++    egl_DllMain(NULL, DLL_PROCESS_ATTACH, NULL) && egl_DllMain(NULL, DLL_THREAD_ATTACH, NULL);
++}
++
++static void __attribute__((destructor)) egl_destructor_func (void)
++{
++    egl_DllMain(NULL, DLL_PROCESS_DETACH, NULL);
++}
++
+ #endif // !QT_OPENGL_ES_2_ANGLE_STATIC
+ 
+ namespace egl
