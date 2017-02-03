@@ -7,7 +7,7 @@
 Summary:        Almost Native Graphics Layer Engine
 Name:           mingw-angleproject
 Version:        0
-Release:        0.15.git.%{snapshot_rev_short}.%{snapshot_stamp}%{?dist}
+Release:        0.16.git.%{snapshot_rev_short}.%{snapshot_stamp}%{?dist}
 License:        BSD
 Group:          System Environment/Libraries
 URL:            http://code.google.com/p/angleproject/
@@ -345,6 +345,9 @@ cp -Rv include/* $RPM_BUILD_ROOT%{mingw64_includedir}
 
 
 %changelog
+* Fri Feb 03 2017 Jajauma's Packages <jajauma@yandex.ru> - 0-0.16.git.30d6c2.20141113
+- Rebuild with GCC 5.4.0
+
 * Sat May 07 2016 Erik van Pienbroek <epienbro@fedoraproject.org> - 0-0.15.git.30d6c2.20141113
 - Fix FTBFS against GCC 6
 
